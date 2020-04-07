@@ -1,6 +1,5 @@
-package Data;
+package youremployees.learning;
 
-import Domain.Employee;
 import org.springframework.data.repository.CrudRepository;
 
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {

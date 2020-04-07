@@ -1,21 +1,19 @@
-package Web;
+package youremployees.learning;
 
-import Data.EmployeeRepository;
-import Domain.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/query")
 @Slf4j
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 public class EmployeeQueryController {
 
     private EmployeeRepository employeeRepository;
@@ -23,22 +21,23 @@ public class EmployeeQueryController {
         this.employeeRepository = employeeRepository;
     }
 
-    @GetMapping(path = "/getEmployees", produces="application/json; charset=UTF-8")
+    @GetMapping(path = "/getEmployees", produces="application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getEmployees() {
+    public ArrayList<Employee> getEmployees() {
         Iterable<Employee> emps = employeeRepository.findAll();
         ArrayList<Employee> employees = new ArrayList<Employee>();
         log.info("Get query");
-        log.info(employees.toString());
         emps.forEach(employees::add);
+        log.info(employees.toString());
         return employees;
     }
-    @PostMapping(path = "/addEmployee", consumes = "application/json; charset=UTF-8")
+    @PostMapping(path = "/addEmployee", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addEmployee(@RequestBody Employee employee){
+    public Employee addEmployee(@RequestBody Employee employee){
+        employee.setId(null);
         log.info("Post request");
         log.info(employee.toString());
-        employeeRepository.save(employee);
+        return employeeRepository.save(employee);
     }
     @PatchMapping(path="/patch/{EmployeeId}", consumes="application/json")
     public ResponseEntity<Employee> patchEmployee(@PathVariable("EmployeeId") Long employeeId, @RequestBody Employee patch) {
