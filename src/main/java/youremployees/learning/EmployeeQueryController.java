@@ -43,7 +43,7 @@ public class EmployeeQueryController {
     public ResponseEntity<Employee> patchEmployee(@PathVariable("EmployeeId") Long employeeId, @RequestBody Employee patch) {
         Optional<Employee> employeeOpt = employeeRepository.findById(employeeId);
         log.info("patch request");
-        if(employeeOpt.isEmpty()) {
+        if(!employeeOpt.isPresent()) {
             return new ResponseEntity<Employee>(patch, HttpStatus.NOT_FOUND);
         }
         Employee employeeToPatch = employeeOpt.get();
